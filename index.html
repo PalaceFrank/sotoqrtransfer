@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transferir a Luis Roberto</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    background: #f4f1eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+  }
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    max-width: 340px;
+    width: 100%;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  .tag { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #999; margin-bottom: .4rem; }
+  h1 { font-size: 1.3rem; margin: 0 0 .2rem; color: #111; }
+  .rut { font-size: .8rem; color: #888; margin-bottom: 1.5rem; }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: .6rem 0; border-bottom: 1px solid #f0ece4; }
+  .row:last-of-type { border-bottom: none; }
+  .row-key { font-size: .72rem; color: #999; text-transform: uppercase; letter-spacing: .06em; }
+  .row-val { font-size: .85rem; font-weight: 600; color: #111; }
+  .btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.4rem;
+    padding: .85rem;
+    background: #111;
+    color: white;
+    font-size: .8rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .btn:hover { background: #c8402a; }
+  .btn.ok { background: #2a7a4a; }
+  .note { font-size: .65rem; color: #bbb; text-align: center; margin-top: 1rem; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="tag">Datos de transferencia</p>
+  <h1>Luis Roberto Soto Chenche</h1>
+  <p class="rut">RUT 24.616.708-7</p>
+  <div class="row"><span class="row-key">Banco</span><span class="row-val">Banco Estado</span></div>
+  <div class="row"><span class="row-key">Tipo</span><span class="row-val">Cuenta Corriente</span></div>
+  <div class="row"><span class="row-key">N° Cuenta</span><span class="row-val">34800043729</span></div>
+  <button class="btn" id="btn" onclick="copiar()">Copiar número de cuenta</button>
+  <p class="note">Verifica los datos antes de transferir</p>
+</div>
+<script>
+function copiar() {
+  navigator.clipboard.writeText("34800043729").then(() => {
+    const b = document.getElementById('btn');
+    b.textContent = '✓ Copiado';
+    b.classList.add('ok');
+    setTimeout(() => { b.textContent = 'Copiar número de cuenta'; b.classList.remove('ok'); }, 2500);
+  });
+}
+</script>
+</body>
+</html>
