@@ -24,102 +24,112 @@
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   }
   .tag { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #999; margin-bottom: .4rem; }
-  h1 { font-size: 1.3rem; margin: 0 0 .2rem; color: #111; }
-  .rut { font-size: .8rem; color: #888; margin-bottom: 1.5rem; }
-  .row { display: flex; justify-content: space-between; align-items: center; padding: .6rem 0; border-bottom: 1px solid #f0ece4; }
+  h1 { font-size: 1.3rem; margin: 0 0 1.5rem; color: #111; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .65rem 0;
+    border-bottom: 1px solid #f0ece4;
+    gap: .5rem;
+  }
   .row:last-of-type { border-bottom: none; }
-  .row-key { font-size: .72rem; color: #999; text-transform: uppercase; letter-spacing: .06em; }
-  .row-val { font-size: .85rem; font-weight: 600; color: #111; }
-  .btn {
-    display: block;
-    width: 100%;
-    margin-top: .8rem;
-    padding: .85rem;
+  .row-left { display: flex; flex-direction: column; gap: .2rem; }
+  .row-key { font-size: .65rem; color: #999; text-transform: uppercase; letter-spacing: .06em; }
+  .row-val { font-size: .9rem; font-weight: 600; color: #111; }
+  .copy-btn {
+    flex-shrink: 0;
+    padding: .35rem .75rem;
     background: #111;
     color: white;
-    font-size: .8rem;
-    letter-spacing: .08em;
+    font-size: .65rem;
+    letter-spacing: .06em;
     text-transform: uppercase;
     border: none;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background .2s;
+    transition: background .15s;
+    white-space: nowrap;
   }
-  .btn:hover { background: #333; }
-  .btn.ok { background: #2a7a4a; }
-  .btn.err { background: #c8402a; }
-  .note { font-size: .65rem; color: #bbb; text-align: center; margin-top: 1rem; }
-
-  /* Campo oculto para fallback iOS */
-  #fallback {
-    position: fixed;
-    left: -9999px;
-    top: 0;
-    opacity: 0;
-    font-size: 16px; /* evita zoom en iOS */
-  }
+  .copy-btn:active { background: #c8402a; }
+  .copy-btn.ok { background: #2a7a4a; }
+  .note { font-size: .62rem; color: #bbb; text-align: center; margin-top: 1.2rem; line-height: 1.5; }
+  textarea#fb { position:fixed; left:-9999px; top:0; font-size:16px; }
 </style>
 </head>
 <body>
 <div class="card">
   <p class="tag">Datos de transferencia</p>
   <h1>Luis Roberto Soto Chenche</h1>
-  <p class="rut">RUT 24.616.708-7</p>
-  <div class="row"><span class="row-key">Banco</span><span class="row-val">Banco Estado</span></div>
-  <div class="row"><span class="row-key">Tipo</span><span class="row-val">Cuenta Corriente</span></div>
-  <div class="row"><span class="row-key">N° Cuenta</span><span class="row-val">34800043729</span></div>
 
-  <button class="btn" id="btnTodo" onclick="copiar(this, 'LUIS ROBERTO SOTO CHENCHE 24616708-7 Banco Estado Cuenta Corriente 34800043729')">Copiar datos</button>
+  <div class="row">
+    <div class="row-left">
+      <span class="row-key">Nombre</span>
+      <span class="row-val">LUIS ROBERTO SOTO CHENCHE</span>
+    </div>
+    <button class="copy-btn" onclick="copiar(this,'LUIS ROBERTO SOTO CHENCHE')">Copiar</button>
+  </div>
 
-  <p class="note">Verifica los datos antes de transferir</p>
+  <div class="row">
+    <div class="row-left">
+      <span class="row-key">RUT</span>
+      <span class="row-val">24616708-7</span>
+    </div>
+    <button class="copy-btn" onclick="copiar(this,'24616708-7')">Copiar</button>
+  </div>
+
+  <div class="row">
+    <div class="row-left">
+      <span class="row-key">Banco</span>
+      <span class="row-val">Banco Estado</span>
+    </div>
+    <button class="copy-btn" onclick="copiar(this,'Banco Estado')">Copiar</button>
+  </div>
+
+  <div class="row">
+    <div class="row-left">
+      <span class="row-key">Tipo de cuenta</span>
+      <span class="row-val">Cuenta Corriente</span>
+    </div>
+    <button class="copy-btn" onclick="copiar(this,'Cuenta Corriente')">Copiar</button>
+  </div>
+
+  <div class="row">
+    <div class="row-left">
+      <span class="row-key">N° Cuenta</span>
+      <span class="row-val">34800043729</span>
+    </div>
+    <button class="copy-btn" onclick="copiar(this,'34800043729')">Copiar</button>
+  </div>
+
+  <p class="note">Toca "Copiar" en cada campo y pégalo en tu app del banco</p>
 </div>
 
-<textarea id="fallback"></textarea>
+<textarea id="fb"></textarea>
 
 <script>
 function copiar(btn, texto) {
   var original = btn.textContent;
-
-  // Método moderno
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(texto).then(function() {
-      ok(btn, original);
-    }).catch(function() {
-      fallback(btn, texto, original);
-    });
+    navigator.clipboard.writeText(texto).then(function() { ok(btn, original); }).catch(function() { fb(btn, texto, original); });
   } else {
-    fallback(btn, texto, original);
+    fb(btn, texto, original);
   }
 }
-
-// Fallback para iOS Safari que no soporta clipboard API
-function fallback(btn, texto, original) {
-  var el = document.getElementById('fallback');
-  el.value = texto;
+function fb(btn, texto, original) {
+  var el = document.getElementById('fb');
   el.style.left = '0';
+  el.value = texto;
   el.focus();
   el.select();
-  // iOS necesita esto
   el.setSelectionRange(0, 99999);
-  try {
-    var exito = document.execCommand('copy');
-    if (exito) { ok(btn, original); }
-    else { err(btn, original); }
-  } catch(e) {
-    err(btn, original);
-  }
+  try { document.execCommand('copy'); ok(btn, original); } catch(e) {}
   el.style.left = '-9999px';
 }
-
 function ok(btn, original) {
-  btn.textContent = '✓ Copiado';
+  btn.textContent = '✓';
   btn.classList.add('ok');
-  setTimeout(function() { btn.textContent = original; btn.classList.remove('ok'); }, 2500);
-}
-function err(btn, original) {
-  btn.textContent = '✗ Error — copia manualmente';
-  btn.classList.add('err');
-  setTimeout(function() { btn.textContent = original; btn.classList.remove('err'); }, 3000);
+  setTimeout(function() { btn.textContent = original; btn.classList.remove('ok'); }, 2000);
 }
 </script>
 </body>
