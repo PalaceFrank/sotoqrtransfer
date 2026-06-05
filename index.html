@@ -31,29 +31,27 @@
     align-items: center;
     padding: .65rem 0;
     border-bottom: 1px solid #f0ece4;
-    gap: .5rem;
   }
   .row:last-of-type { border-bottom: none; }
-  .row-left { display: flex; flex-direction: column; gap: .2rem; }
   .row-key { font-size: .65rem; color: #999; text-transform: uppercase; letter-spacing: .06em; }
-  .row-val { font-size: .9rem; font-weight: 600; color: #111; }
-  .copy-btn {
-    flex-shrink: 0;
-    padding: .35rem .75rem;
+  .row-val { font-size: .9rem; font-weight: 600; color: #111; text-align: right; }
+  .btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.4rem;
+    padding: .85rem;
     background: #111;
     color: white;
-    font-size: .65rem;
-    letter-spacing: .06em;
+    font-size: .8rem;
+    letter-spacing: .08em;
     text-transform: uppercase;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background .15s;
-    white-space: nowrap;
+    transition: background .2s;
   }
-  .copy-btn:active { background: #c8402a; }
-  .copy-btn.ok { background: #2a7a4a; }
-  .note { font-size: .62rem; color: #bbb; text-align: center; margin-top: 1.2rem; line-height: 1.5; }
+  .btn.ok { background: #2a7a4a; }
+  .note { font-size: .62rem; color: #bbb; text-align: center; margin-top: 1rem; line-height: 1.5; }
   textarea#fb { position:fixed; left:-9999px; top:0; font-size:16px; }
 </style>
 </head>
@@ -61,55 +59,18 @@
 <div class="card">
   <p class="tag">Datos de transferencia</p>
   <h1>Luis Roberto Soto Chenche</h1>
-
-  <div class="row">
-    <div class="row-left">
-      <span class="row-key">Nombre</span>
-      <span class="row-val">LUIS ROBERTO SOTO CHENCHE</span>
-    </div>
-    <button class="copy-btn" onclick="copiar(this,'LUIS ROBERTO SOTO CHENCHE')">Copiar</button>
-  </div>
-
-  <div class="row">
-    <div class="row-left">
-      <span class="row-key">RUT</span>
-      <span class="row-val">24616708-7</span>
-    </div>
-    <button class="copy-btn" onclick="copiar(this,'24616708-7')">Copiar</button>
-  </div>
-
-  <div class="row">
-    <div class="row-left">
-      <span class="row-key">Banco</span>
-      <span class="row-val">Banco Estado</span>
-    </div>
-    <button class="copy-btn" onclick="copiar(this,'Banco Estado')">Copiar</button>
-  </div>
-
-  <div class="row">
-    <div class="row-left">
-      <span class="row-key">Tipo de cuenta</span>
-      <span class="row-val">Cuenta Corriente</span>
-    </div>
-    <button class="copy-btn" onclick="copiar(this,'Cuenta Corriente')">Copiar</button>
-  </div>
-
-  <div class="row">
-    <div class="row-left">
-      <span class="row-key">N° Cuenta</span>
-      <span class="row-val">34800043729</span>
-    </div>
-    <button class="copy-btn" onclick="copiar(this,'34800043729')">Copiar</button>
-  </div>
-
-  <button class="copy-btn" style="width:100%;margin-top:1.2rem;padding:.75rem;font-size:.72rem;border-radius:10px;background:#444" onclick="copiar(this,'LUIS ROBERTO SOTO CHENCHE\n24616708-7\nBanco Estado\nCuenta Corriente\n34800043729')">Copiar todos los datos</button>
-  <p class="note">Toca "Copiar" en cada campo y pégalo en tu app del banco</p>
+  <div class="row"><span class="row-key">Nombre</span><span class="row-val">LUIS ROBERTO SOTO CHENCHE</span></div>
+  <div class="row"><span class="row-key">RUT</span><span class="row-val">24616708-7</span></div>
+  <div class="row"><span class="row-key">Banco</span><span class="row-val">Banco Estado</span></div>
+  <div class="row"><span class="row-key">Tipo de cuenta</span><span class="row-val">Cuenta Corriente</span></div>
+  <div class="row"><span class="row-key">N° Cuenta</span><span class="row-val">34800043729</span></div>
+  <button class="btn" id="btn" onclick="copiar(this)">Copiar datos</button>
+  <p class="note">Verifica los datos antes de transferir</p>
 </div>
-
 <textarea id="fb"></textarea>
-
 <script>
-function copiar(btn, texto) {
+function copiar(btn) {
+  var texto = "LUIS ROBERTO SOTO CHENCHE\n24616708-7\nBanco Estado\nCuenta Corriente\n34800043729";
   var original = btn.textContent;
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(texto).then(function() { ok(btn, original); }).catch(function() { fb(btn, texto, original); });
@@ -128,9 +89,9 @@ function fb(btn, texto, original) {
   el.style.left = '-9999px';
 }
 function ok(btn, original) {
-  btn.textContent = '✓';
+  btn.textContent = '✓ Copiado';
   btn.classList.add('ok');
-  setTimeout(function() { btn.textContent = original; btn.classList.remove('ok'); }, 2000);
+  setTimeout(function() { btn.textContent = original; btn.classList.remove('ok'); }, 2500);
 }
 </script>
 </body>
